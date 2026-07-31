@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday! ✨</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ENVELOPE ENTRY SCREEN -->
+  <div id="envelopeOverlay" class="envelope-overlay">
+    <div class="envelope-wrapper" id="envelopeWrapper">
+      <div class="envelope">
+        <div class="envelope-back"></div>
+        <div class="envelope-paper">
+          <p class="envelope-text">For Someone Special ❤️</p>
+          <span class="tap-hint">Click to Open</span>
+        </div>
+        <div class="envelope-front"></div>
+        <div class="envelope-top"></div>
+        <div class="heart-seal">❤️</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fullscreen Animated Canvas Backgrounds -->
+  <canvas id="bgCanvas"></canvas>
+  <canvas id="confettiCanvas"></canvas>
+  <canvas id="fireworksCanvas"></canvas>
+
+  <!-- Audio Controls -->
+  <div class="audio-control">
+    <button id="musicToggle" class="glass-btn audio-btn" aria-label="Toggle Audio">
+      <span id="musicIcon">🎵</span>
+      <span id="musicText">Pause Music</span>
+    </button>
+  </div>
+<audio id="bgMusic" loop src="birthday.mp3"></audio>
+  <main class="container">
+
+    <!-- 1. HERO SECTION -->
+    <section class="section hero-section">
+      <div class="glass-card hero-card fade-in">
+        
+        <!-- Her Circular Profile Image -->
+        <div class="hero-profile-wrapper">
+          <img src="https://i.postimg.cc/T1WkQP0S/IMG-7302.avif" alt="Birthday Girl" class="hero-profile-img">
+          <div class="profile-glow"></div>
+        </div>
+
+        <span class="badge">Special Day 🎉</span>
+        <h1 class="main-title">Happy Birthday, <span class="highlight-name" id="userName">Bisma</span>!</h1>
+        
+        <!-- Animated Cake -->
+        <div class="cake-container">
+          <div class="cake">
+            <div class="candle">
+              <div class="flame"></div>
+            </div>
+            <div class="layer layer-top"></div>
+            <div class="layer layer-middle"></div>
+            <div class="layer layer-bottom"></div>
+          </div>
+        </div>
+
+        <!-- Typing Effect Container -->
+        <div class="typing-box">
+          <p id="typingText"></p><span class="cursor">|</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. PHOTO MEMORY SECTION -->
+    <section class="section scroll-reveal">
+      <h2 class="section-title">✨ Precious Memories</h2>
+      <div class="photo-grid">
+        <div class="photo-card" onclick="openLightbox('https://i.postimg.cc/28H6nF34/IMG-1814.avif')">
+          <img src="https://i.postimg.cc/28H6nF34/IMG-1814.avif" alt="Memory 1">
+          <div class="photo-overlay"><span>Celebration Time 🎉</span></div>
+        </div>
+        <div class="photo-card" onclick="openLightbox('https://i.postimg.cc/pTYVrKg5/IMG-2720.avif')">
+          <img src="https://i.postimg.cc/pTYVrKg5/IMG-2720.avif" alt="Memory 2">
+          <div class="photo-overlay"><span>Best Smiles 😊</span></div>
+        </div>
+        <div class="photo-card" onclick="openLightbox('https://i.postimg.cc/j5XKtt7s/IMG-2790.avif')">
+          <img src="https://i.postimg.cc/j5XKtt7s/IMG-2790.avif" alt="Memory 3">
+          <div class="photo-overlay"><span>Sweet Moments 🎂</span></div>
+        </div>
+        <div class="photo-card" onclick="openLightbox('https://i.postimg.cc/gkcjwBz1/IMG-6820.jpg')">
+          <img src="https://i.postimg.cc/gkcjwBz1/IMG-6820.jpg" alt="Memory 4">
+          <div class="photo-overlay"><span>Late Night Fun ✨</span></div>
+        </div>
+        <div class="photo-card" onclick="openLightbox('https://i.postimg.cc/WbtjcRbD/IMG-9187.avif')">
+          <img src="https://i.postimg.cc/WbtjcRbD/IMG-9187.avif" alt="Memory 5">
+          <div class="photo-overlay"><span>Unforgettable 🌟</span></div>
+        </div>
+        <div class="photo-card" onclick="openLightbox('https://i.postimg.cc/QxVsZLx7/IMG-9412.avif')">
+          <img src="https://i.postimg.cc/QxVsZLx7/IMG-9412.avif" alt="Memory 6">
+          <div class="photo-overlay"><span>Cheers to You 🥂</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. FUNNY FIGHT SECTION -->
+    <section class="section scroll-reveal">
+      <h2 class="section-title">🛋️ The Daily Squabbles</h2>
+      <div class="glass-card cartoon-stage">
+        
+        <!-- Speech Bubbles -->
+        <div class="speech-bubble bubble-girl">You forgot my BD! 😡💥</div>
+        <div class="speech-bubble bubble-boy">I was busy making this surprise for you! 😭🎁</div>
+
+        <!-- Fight Image Container -->
+        <div class="fight-img-wrapper">
+          <img src="https://i.postimg.cc/KvRvNhtH/www-beatsnoop-com-final-9Judxzlp-Fn-removebg-preview.png" alt="Funny Fight" class="fight-img">
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. FINAL SURPRISE SECTION -->
+    <section class="section scroll-reveal final-section">
+      <div class="glass-card surprise-card">
+        <h2 class="glowing-text">Happy Birthday ❤️</h2>
+        <p class="surprise-desc">May your year ahead be as bright, happy, and fabulous as your smile!</p>
+        <button id="surpriseBtn" class="glass-btn surprise-btn">✨ Click to Open Final Surprise! ✨</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- POPUP MODAL FOR FINAL SURPRISE -->
+  <div id="surpriseModal" class="modal-overlay" onclick="closeSurpriseModal()">
+    <div class="modal-card glass-card" onclick="event.stopPropagation()">
+      <span class="modal-close" onclick="closeSurpriseModal()">&times;</span>
+      <div class="modal-body">
+        <p class="surprise-text">Boni, 5 footiya 🤪❤️</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox Modal for Photos -->
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightboxImg" class="lightbox-content" alt="Enlarged Memory">
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

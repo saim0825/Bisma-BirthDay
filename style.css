@@ -1,0 +1,632 @@
+/* ==========================================================================
+   1. RESET & VARIABLES
+   ========================================================================== */
+:root {
+  --primary-color: #ff758c;
+  --secondary-color: #ff7eb3;
+  --accent-color: #7b2cbf;
+  --bg-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  --glass-bg: rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.25);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --text-main: #ffffff;
+  --text-sub: #f0f0f0;
+  --font-family: 'Poppins', sans-serif;
+  --hand-font: 'Caveat', cursive;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family);
+  background: var(--bg-gradient);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ==========================================================================
+   2. ENVELOPE ENTRY SCREEN
+   ========================================================================== */
+.envelope-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: radial-gradient(circle at center, #2d124d, #0f0c29);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: opacity 1s ease, visibility 1s ease;
+}
+
+.envelope-overlay.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.envelope-wrapper {
+  perspective: 1000px;
+}
+
+.envelope {
+  position: relative;
+  width: 280px;
+  height: 180px;
+  background: #ff4d6d;
+  border-radius: 8px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+  transition: transform 0.4s ease;
+}
+
+.envelope-wrapper:hover .envelope {
+  transform: translateY(-5px) scale(1.03);
+}
+
+.envelope-back {
+  position: absolute;
+  inset: 0;
+  background: #d90429;
+  border-radius: 8px;
+}
+
+.envelope-paper {
+  position: absolute;
+  bottom: 10px;
+  left: 15px;
+  right: 15px;
+  height: 150px;
+  background: #fff;
+  border-radius: 6px;
+  padding: 20px 10px;
+  text-align: center;
+  transition: transform 0.6s ease-in-out;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  z-index: 2;
+}
+
+.envelope-text {
+  font-family: var(--hand-font);
+  font-size: 1.6rem;
+  color: #ff4d6d;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.tap-hint {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: pulse 1.5s infinite;
+}
+
+.envelope-front {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-left: 140px solid #ff758c;
+  border-right: 140px solid #ff758c;
+  border-bottom: 95px solid #ff4d6d;
+  border-top: 85px solid transparent;
+  border-radius: 0 0 8px 8px;
+  pointer-events: none;
+}
+
+.envelope-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  z-index: 4;
+  border-left: 140px solid transparent;
+  border-right: 140px solid transparent;
+  border-top: 100px solid #ff4d6d;
+  transform-origin: top;
+  transition: transform 0.6s ease-in-out;
+  pointer-events: none;
+}
+
+.heart-seal {
+  position: absolute;
+  top: 75px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  font-size: 2rem;
+  transition: opacity 0.3s ease;
+}
+
+.envelope.open .envelope-top {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+
+.envelope.open .envelope-paper {
+  transform: translateY(-80px);
+  z-index: 4;
+}
+
+.envelope.open .heart-seal {
+  opacity: 0;
+}
+
+/* ==========================================================================
+   3. CANVAS BACKGROUNDS
+   ========================================================================== */
+#bgCanvas, #confettiCanvas, #fireworksCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+
+#bgCanvas { z-index: 1; }
+#confettiCanvas { z-index: 99; }
+#fireworksCanvas { z-index: 100; }
+
+/* ==========================================================================
+   4. GLASSMORPHISM & GENERAL STYLES
+   ========================================================================== */
+.container {
+  position: relative;
+  z-index: 10;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: var(--glass-shadow);
+  padding: 40px;
+  text-align: center;
+}
+
+.section {
+  padding: 60px 0;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  text-align: center;
+  margin-bottom: 40px;
+  text-shadow: 0 0 10px rgba(255,255,255,0.3);
+}
+
+.glass-btn {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: #fff;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(255, 117, 140, 0.4);
+  transition: all 0.3s ease;
+}
+
+.glass-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 6px 20px rgba(255, 117, 140, 0.6);
+}
+
+.audio-control {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 101;
+}
+
+.audio-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   5. HERO SECTION & PROFILE IMAGE
+   ========================================================================== */
+.hero-section {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-profile-wrapper {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 20px auto;
+}
+
+.hero-profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  border: 4px solid #ffffff;
+  box-shadow: 0 8px 25px rgba(255, 117, 140, 0.5);
+  position: relative;
+  z-index: 2;
+  animation: floatProfile 3s infinite ease-in-out;
+}
+
+.profile-glow {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #ff758c, #ff7eb3, #7b2cbf, #ff758c);
+  z-index: 1;
+  filter: blur(8px);
+  opacity: 0.8;
+  animation: rotateGlow 4s linear infinite;
+}
+
+.badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.main-title {
+  font-size: 3.2rem;
+  margin: 15px 0;
+}
+
+.highlight-name {
+  background: linear-gradient(45deg, #ff9a9e, #fecfef, #a1c4fd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.typing-box {
+  min-height: 50px;
+  font-size: 1.25rem;
+  color: var(--text-sub);
+  margin-top: 20px;
+}
+
+.cursor {
+  animation: blink 0.8s infinite;
+}
+
+.cake-container {
+  margin: 30px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.cake {
+  width: 150px;
+  height: 120px;
+  position: relative;
+}
+
+.layer {
+  position: absolute;
+  width: 100%;
+  border-radius: 10px 10px 0 0;
+}
+
+.layer-bottom { bottom: 0; height: 40px; background: #ff758c; }
+.layer-middle { bottom: 35px; height: 35px; width: 80%; left: 10%; background: #ffb6c1; }
+.layer-top { bottom: 65px; height: 30px; width: 60%; left: 20%; background: #ffffff; }
+
+.candle {
+  width: 8px;
+  height: 25px;
+  background: linear-gradient(#f7d070, #f5a623);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 3px;
+}
+
+.flame {
+  width: 12px;
+  height: 18px;
+  background: #ff9d00;
+  border-radius: 50% 50% 20% 20%;
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 12px #ff9d00, 0 0 24px #ff0000;
+  animation: flicker 0.6s infinite alternate;
+}
+
+/* ==========================================================================
+   6. PHOTO GALLERY
+   ========================================================================== */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.photo-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  cursor: pointer;
+  border: 2px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  transition: transform 0.4s ease, border-color 0.4s ease;
+}
+
+.photo-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.5s ease;
+}
+
+.photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-weight: 600;
+}
+
+.photo-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: var(--primary-color);
+}
+
+.photo-card:hover img { transform: scale(1.1); }
+.photo-card:hover .photo-overlay { opacity: 1; }
+
+.lightbox {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(8px);
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-content {
+  max-width: 90%;
+  max-height: 80vh;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(255,255,255,0.2);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 2.5rem;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   7. CARTOON FIGHT SECTION WITH CUSTOM IMAGE
+   ========================================================================== */
+.cartoon-stage {
+  position: relative;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  overflow: hidden;
+  padding-top: 80px;
+}
+
+.fight-img-wrapper {
+  max-width: 320px;
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  margin-top: 20px;
+}
+
+.fight-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.speech-bubble {
+  position: absolute;
+  background: #ffffff;
+  color: #333;
+  padding: 12px 18px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+  max-width: 220px;
+  text-align: center;
+  z-index: 10;
+}
+
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  border-width: 8px 8px 0;
+  border-style: solid;
+  border-color: #fff transparent;
+}
+
+.bubble-girl {
+  top: 20px;
+  left: 8%;
+  animation: floatBubble 2s infinite ease-in-out;
+}
+.bubble-girl::after { left: 40px; }
+
+.bubble-boy {
+  top: 20px;
+  right: 8%;
+  animation: floatBubble 2s infinite ease-in-out 1s;
+}
+.bubble-boy::after { right: 40px; }
+
+/* ==========================================================================
+   8. POPUP MODAL & SURPRISE SECTION
+   ========================================================================== */
+.surprise-card { padding: 60px 20px; }
+
+.glowing-text {
+  font-size: 3rem;
+  color: #fff;
+  text-shadow: 0 0 10px #ff758c, 0 0 20px #ff758c, 0 0 30px #ff758c;
+  margin-bottom: 15px;
+}
+
+.surprise-desc {
+  font-size: 1.2rem;
+  color: var(--text-sub);
+  margin-bottom: 30px;
+}
+
+.surprise-btn {
+  font-size: 1.2rem;
+  padding: 16px 36px;
+}
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.modal-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+.modal-card {
+  position: relative;
+  width: 90%;
+  max-width: 450px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  padding: 40px 20px;
+  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 2rem;
+  color: #fff;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.surprise-text {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 0 15px #ff758c, 0 0 25px #ff7eb3;
+  margin: 10px 0;
+}
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out;
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   9. KEYFRAME ANIMATIONS
+   ========================================================================== */
+@keyframes floatProfile {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes rotateGlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes flicker {
+  0% { transform: translateX(-50%) scale(1); opacity: 0.9; }
+  100% { transform: translateX(-50%) scale(1.15); opacity: 1; box-shadow: 0 0 18px #ff9d00, 0 0 30px #ff0000; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes blink { 50% { opacity: 0; } }
+
+@keyframes floatBubble {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .main-title { font-size: 2.2rem; }
+  .section-title { font-size: 1.8rem; }
+  
+  .speech-bubble { font-size: 0.75rem; max-width: 140px; padding: 8px 12px; }
+  .bubble-girl { left: 2%; top: 10px; }
+  .bubble-boy { right: 2%; top: 10px; }
+  .surprise-text { font-size: 1.7rem; }
+}
